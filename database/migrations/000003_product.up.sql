@@ -1,5 +1,5 @@
 create table if not exists `product` (
-    sku VARCHAR(50) NOT NULL AUTO_INCREMENT,
+    sku VARCHAR(50) PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     category_id INTEGER NOT NULL,
     price INTEGER NOT NULL,
@@ -13,4 +13,4 @@ create table if not exists `product` (
 );
 
 -- Create foreign key constraints with table "product";
-ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `product_images` ADD FOREIGN KEY (`product_sku`) REFERENCES `product` (`sku`) ON DELETE CASCADE ON UPDATE CASCADE;
