@@ -1,6 +1,7 @@
 package main
 
 import (
+	"golang-graphql/database"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -14,9 +15,20 @@ func main() {
 		log.Fatal().Err(envErr).Msg("cannot load environment")
 	}
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	appPort := os.Getenv("PORT")
+	if appPort == "" {
+		appPort = "8080"
+	}
+
+	var dbUsername = os.Getenv("DB_USERNAME")
+	var dbPassword = os.Getenv("DB_PASSWORD")
+	var dbName = os.Getenv("DB_DATABASE")
+	var dbHost = os.Getenv("DB_HOST")
+	var dbPort = os.Getenv("DB_PORT")
+	_, dbErr := database.ConnectDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
+
+	if dbErr != nil {
+		log.Fatal().Err(dbErr).Msg("cannot connect to database")
 	}
 
 	/*server := gin.Default()
