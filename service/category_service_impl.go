@@ -1,6 +1,7 @@
 package service
 
 import (
+	"golang-graphql/utils"
 	"golang-store/models/entity"
 	"golang-store/models/web"
 	"golang-store/repository"
@@ -61,5 +62,20 @@ func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (entit
 	}
 
 	return response, nil
+}
 
+func (service *CategoryServiceImpl) GetById(id int) (*entity.CategoryRepository, error) {
+	category, err := service.repository.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return category, nil
+}
+
+func (service *CategoryServiceImpl) GetAll(pagination utils.Pagination) (*utils.Pagination, error) {
+	categories, err := service.repository.FindAll(pagination)
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
 }
