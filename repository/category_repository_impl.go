@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"golang-store/models/entity"
+	"golang-store/model/entity"
 	"golang-store/utils"
 
 	"gorm.io/gorm"

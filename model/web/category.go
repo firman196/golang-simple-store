@@ -9,7 +9,7 @@ type CategoryCreateInput struct {
 	ParentId     string `json:"parent_id"`
 }
 
-type CategoryCreateUpdate struct {
+type CategoryUpdateInput struct {
 	Id           string `json:"id" binding:"required"`
 	Icon         string `json:"icon"`
 	CategoryName string `json:"category_name" binding:"required, max=100"`

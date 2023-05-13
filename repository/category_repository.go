@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"golang-graphql/utils"
 	"golang-store/model/entity"
+	"golang-store/utils"
 )
 
 type CategoryRepository interface {

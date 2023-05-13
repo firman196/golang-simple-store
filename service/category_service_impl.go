@@ -1,10 +1,10 @@
 package service
 
 import (
-	"golang-graphql/utils"
-	"golang-store/models/entity"
-	"golang-store/models/web"
+	"golang-store/model/entity"
+	"golang-store/model/web"
 	"golang-store/repository"
+	"golang-store/utils"
 )
 
 type CategoryServiceImpl struct {
@@ -17,8 +17,8 @@ func NewCategoryServiceImpl(repository repository.CategoryRepository) CategorySe
 	}
 }
 
-func (service *CategoryServiceImpl) Create(input web.CategoryCreateInput) (entity.CategoryRepository, error) {
-	category := entity.UserRepository{
+func (service *CategoryServiceImpl) Create(input web.CategoryCreateInput) (*entity.Category, error) {
+	category := entity.Category{
 		Icon:         input.Icon,
 		CategoryName: input.CategoryName,
 		Slug:         input.Slug,
@@ -35,7 +35,7 @@ func (service *CategoryServiceImpl) Create(input web.CategoryCreateInput) (entit
 	return response, nil
 }
 
-func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (entity.CategoryRepository, error) {
+func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (*entity.Category, error) {
 	category, err := service.repository.FindByID(input.Id)
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (entit
 		category.Icon = input.Icon
 	}
 
-	newCategory := entity.UserRepository{
+	newCategory := entity.Category{
 		Id:           category.Id,
 		Icon:         category.Icon,
 		CategoryName: input.CategoryName,
@@ -64,7 +64,7 @@ func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (entit
 	return response, nil
 }
 
-func (service *CategoryServiceImpl) GetById(id int) (*entity.CategoryRepository, error) {
+func (service *CategoryServiceImpl) GetById(id int) (*entity.Category, error) {
 	category, err := service.repository.FindByID(id)
 	if err != nil {
 		return nil, err

@@ -9,7 +9,7 @@ type Category struct {
 	Slug         string
 	Notes        string
 	IsAktif      string
-	ParentId     int
+	ParentId     string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
