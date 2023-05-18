@@ -1,9 +1,14 @@
 package main
 
 import (
-	"golang-graphql/database"
+	"golang-store/controller"
+	"golang-store/database"
+	"golang-store/repository"
+	"golang-store/service"
 	"os"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
 )
@@ -25,13 +30,25 @@ func main() {
 	var dbName = os.Getenv("DB_DATABASE")
 	var dbHost = os.Getenv("DB_HOST")
 	var dbPort = os.Getenv("DB_PORT")
-	_, dbErr := database.ConnectDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
+	db, dbErr := database.ConnectDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
 
 	if dbErr != nil {
 		log.Fatal().Err(dbErr).Msg("cannot connect to database")
 	}
 
-	/*server := gin.Default()
-	routes.ApiRoutes(server)
-	server.Run(":" + port)*/
+	//repository layer
+	categoryRepository := repository.NewCategoryRepositoryImpl(db)
+
+	//service layer
+	categoryService := service.NewCategoryServiceImpl(categoryRepository)
+
+	//controller layer
+	categoryController := controller.NewCategoryControllerImpl(categoryService)
+
+	router := gin.Default()
+	router.Use(cors.Default())
+	api := router.Group("/api/v1")
+	api.POST("/category", categoryController.Create)
+
+	router.Run(":" + appPort)
 }

@@ -13,3 +13,8 @@ type Category struct {
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
+
+//set table name to category because gorm will use plural names
+func (Category) TableName() string {
+	return "category"
+}

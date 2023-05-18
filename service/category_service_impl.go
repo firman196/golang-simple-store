@@ -4,7 +4,6 @@ import (
 	"golang-store/model/entity"
 	"golang-store/model/web"
 	"golang-store/repository"
-	"golang-store/utils"
 )
 
 type CategoryServiceImpl struct {
@@ -41,7 +40,7 @@ func (service *CategoryServiceImpl) Update(input web.CategoryUpdateInput) (*enti
 		return nil, err
 	}
 
-	if input.Icon != nil {
+	if input.Icon != "" {
 		category.Icon = input.Icon
 	}
 
@@ -72,10 +71,11 @@ func (service *CategoryServiceImpl) GetById(id int) (*entity.Category, error) {
 	return category, nil
 }
 
+/*
 func (service *CategoryServiceImpl) GetAll(pagination utils.Pagination) (*utils.Pagination, error) {
 	categories, err := service.repository.FindAll(pagination)
 	if err != nil {
 		return nil, err
 	}
 	return categories, nil
-}
+}*/
