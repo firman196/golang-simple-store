@@ -48,7 +48,11 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 	api := router.Group("/api/v1")
+
+	//route category
 	api.POST("/category", categoryController.Create)
+	api.PUT("/category", categoryController.Update)
+	api.GET("/category/:id", categoryController.GetById)
 
 	router.Run(":" + appPort)
 }

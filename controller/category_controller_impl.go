@@ -55,12 +55,12 @@ func (service *CategoryControllerImpl) Update(c *gin.Context) {
 	}
 	category, errService := service.CategoryService.Update(input)
 	if errService != nil {
-		response := utils.ApiResponse("Create category failed", http.StatusBadRequest, "error", nil)
+		response := utils.ApiResponse("Update category failed", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := utils.ApiResponse("Create category success", http.StatusOK, "success", category)
+	response := utils.ApiResponse("Update category success", http.StatusOK, "success", category)
 	c.JSON(http.StatusOK, response)
 }
 
@@ -74,12 +74,20 @@ func (service *CategoryControllerImpl) GetById(c *gin.Context) {
 
 	category, errService := service.CategoryService.GetById(id)
 	if errService != nil {
-		response := utils.ApiResponse("Get data category failed", http.StatusBadRequest, "error", nil)
+		response := utils.ApiResponse("Get data category failed", http.StatusBadRequest, "error", errService)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	response := utils.ApiResponse("Get data category success", http.StatusOK, "success", category)
 	c.JSON(http.StatusOK, response)
-
 }
+
+/*
+func (service *CategoryControllerImpl) GetAll(c *gin.Context) {
+	limit, err := strconv.Atoi(c.Param("limit"))
+
+	paginate := utils.Pagination{
+		//fmt.Sprintf(li)
+	}
+}*/
