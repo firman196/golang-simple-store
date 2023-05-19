@@ -83,11 +83,25 @@ func (service *CategoryControllerImpl) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-/*
 func (service *CategoryControllerImpl) GetAll(c *gin.Context) {
-	limit, err := strconv.Atoi(c.Param("limit"))
-
-	paginate := utils.Pagination{
-		//fmt.Sprintf(li)
+	var param utils.Pagination
+	err := c.ShouldBind(&param)
+	if err != nil {
+		errors := utils.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := utils.ApiResponse("Get All Category Failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
-}*/
+
+	categories, errService := service.CategoryService.GetAll(param)
+
+	if errService != nil {
+		response := utils.ApiResponse("Get all data category failed", http.StatusBadRequest, "error", errService)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := utils.ApiResponse("Get all data category success", http.StatusOK, "success", categories)
+	c.JSON(http.StatusOK, response)
+}
