@@ -53,6 +53,7 @@ func main() {
 	api.POST("/category", categoryController.Create)
 	api.PUT("/category", categoryController.Update)
 	api.GET("/category/:id", categoryController.GetById)
+	api.GET("/category", categoryController.GetAll)
 
 	router.Run(":" + appPort)
 }

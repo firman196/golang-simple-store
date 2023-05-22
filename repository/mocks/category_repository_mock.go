@@ -1,4 +1,4 @@
-package repository
+package mocks
 
 import (
 	"golang-store/model/entity"
@@ -42,3 +42,14 @@ func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
 		return &result, nil
 	}
 }
+
+/*
+func (r *CategoryRepositoryMock) FindAll(pagination utils.Pagination) (*utils.Pagination, error) {
+	var categories []entity.Category
+	if err := r.db.Scopes(pagination.Paginate(categories, r.db)).Find(&categories).Error; err != nil {
+		return nil, err
+	}
+
+	pagination.Rows = categories
+	return &pagination, nil
+}*/
