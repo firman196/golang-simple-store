@@ -7,12 +7,13 @@ import (
 )
 
 type CategoryRepositoryMock struct {
-	Mock mock.Mock
+	mock.Mock
 }
 
 // Mock create a new category
 func (r *CategoryRepositoryMock) Create(category entity.Category) (*entity.Category, error) {
-	args := r.Mock.Called(category)
+	args := r.Called(category)
+
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	} else {
@@ -23,7 +24,7 @@ func (r *CategoryRepositoryMock) Create(category entity.Category) (*entity.Categ
 
 // Mock update a category
 func (r *CategoryRepositoryMock) Update(category entity.Category) (*entity.Category, error) {
-	args := r.Mock.Called(category)
+	args := r.Called(category)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	} else {
@@ -34,7 +35,7 @@ func (r *CategoryRepositoryMock) Update(category entity.Category) (*entity.Categ
 
 // find category by id
 func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
-	args := r.Mock.Called(id)
+	args := r.Called(id)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	} else {

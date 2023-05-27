@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"golang-store/model/entity"
 	"golang-store/model/web"
 	"golang-store/repository/mocks"
@@ -10,8 +11,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
-var categoryService = CategoryServiceImpl{repository: categoryRepository}
 var category = entity.Category{
 	Icon:         "icon.PNG",
 	CategoryName: "Food",
@@ -29,6 +28,7 @@ var categoryCreateInput = web.CategoryCreateInput{
 }
 
 var categoryUpdateInput = web.CategoryUpdateInput{
+	Id:           1,
 	Icon:         "icon.PNG",
 	CategoryName: "Food",
 	Slug:         "food",
@@ -36,66 +36,80 @@ var categoryUpdateInput = web.CategoryUpdateInput{
 	IsAktif:      "1",
 }
 
+// Scenario successfully
 // testing Create category service using testify and mock
-func TestCreateCategory(t *testing.T) {
+func TestCreateSuccess(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
 	//positive case
-	t.Run("success", func(t *testing.T) {
-		categoryRepository.Mock.On("Create", &category).Return(category, nil)
-		category, err := categoryService.Create(categoryCreateInput)
+	categoryRepository.Mock.On("Create", category).Return(category, nil)
+	category, err := categoryService.Create(categoryCreateInput)
 
-		assert.Nil(t, err)
-		assert.NotNil(t, category)
-	})
-
-	//negative case
-	t.Run("error", func(t *testing.T) {
-		categoryRepository.Mock.On("Create", &category).Return(nil, "internal server error")
-		category, err := categoryService.Create(categoryCreateInput)
-
-		assert.NotNil(t, err)
-		assert.Nil(t, category)
-	})
-
+	assert.Nil(t, err)
+	assert.NotNil(t, category)
+	categoryRepository.Mock.AssertExpectations(t)
 }
 
+// Scenario failed
+// testing Create category service using testify and mock
+func TestFailedCreate(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("Create", category).Return(nil, errors.New("Internal Server Error"))
+	categoryErr, err := categoryService.Create(categoryCreateInput)
+
+	assert.Error(t, err)
+	assert.Nil(t, categoryErr)
+	categoryRepository.Mock.AssertExpectations(t)
+}
+
+// Scenario successfully
 // testing GetById category using service using testify and mock
-func TestFindById(t *testing.T) {
-	//positive case
-	t.Run("success", func(t *testing.T) {
-		categoryRepository.Mock.On("FindByID", "1").Return(category, nil)
-		category, err := categoryService.GetById(1)
+func TestFindByIdSuccess(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("FindByID", 1).Return(category, nil)
+	category, err := categoryService.GetById(1)
 
-		assert.Nil(t, err)
-		assert.NotNil(t, category)
-	})
-
-	//negative case
-	t.Run("error", func(t *testing.T) {
-		categoryRepository.Mock.On("FindByID", "1").Return(nil, "category with id 1 is not found")
-		category, err := categoryService.GetById(1)
-
-		assert.NotNil(t, err)
-		assert.Nil(t, category)
-	})
+	assert.Nil(t, err)
+	assert.NotNil(t, category)
+	categoryRepository.Mock.AssertExpectations(t)
 }
 
+// Scenario failed category not found
+// testing GetById category using service using testify and mock
+func TestFindByIdErrNotFound(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("FindByID", 2).Return(nil, errors.New("category with id 1 is not found")).Once()
+	errCategory, err := categoryService.GetById(2)
+	assert.Error(t, err)
+	assert.Nil(t, errCategory)
+	categoryRepository.Mock.AssertExpectations(t)
+}
+
+// Scenario successfully
 // testing Update category using service using testify and mock
-func TestUpdate(t *testing.T) {
-	//positive case
-	t.Run("success", func(t *testing.T) {
-		categoryRepository.Mock.On("Update", &category).Return(category, nil)
-		category, err := categoryService.Update(categoryUpdateInput)
+func TestUpdateSuccess(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("Update", category).Return(category, nil)
+	categoryRepository.Mock.On("FindByID", 1).Return(category, nil)
+	category, err := categoryService.Update(categoryUpdateInput)
 
-		assert.Nil(t, err)
-		assert.NotNil(t, category)
-	})
+	assert.Nil(t, err)
+	assert.NotNil(t, category)
+}
 
-	//negative case
-	t.Run("error", func(t *testing.T) {
-		categoryRepository.Mock.On("Update", &category).Return(nil, "category with id 1 is not found")
-		category, err := categoryService.Update(categoryUpdateInput)
+// Scenario failed because user not found
+// testing Update category using service using testify and mock
+func TestUpdateFailed(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("Update", category).Return(nil, "category with id 1 is not found")
+	categoryRepository.Mock.On("FindByID", 1).Return(nil, errors.New("category with id 2 is not found"))
+	categoryUpdateErr, err := categoryService.Update(categoryUpdateInput)
 
-		assert.NotNil(t, err)
-		assert.Nil(t, category)
-	})
+	assert.Error(t, err)
+	assert.Nil(t, categoryUpdateErr)
 }
