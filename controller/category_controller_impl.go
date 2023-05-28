@@ -83,7 +83,6 @@ func (service *CategoryControllerImpl) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-/*
 func (service *CategoryControllerImpl) GetAll(c *gin.Context) {
 	var param utils.Pagination
 	err := c.ShouldBind(&param)
@@ -105,4 +104,4 @@ func (service *CategoryControllerImpl) GetAll(c *gin.Context) {
 
 	response := utils.ApiResponse("Get all data category success", http.StatusOK, "success", categories)
 	c.JSON(http.StatusOK, response)
-}*/
+}

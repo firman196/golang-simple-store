@@ -2,6 +2,7 @@ package repository
 
 import (
 	"golang-store/model/entity"
+	"golang-store/utils"
 
 	"gorm.io/gorm"
 )
@@ -47,7 +48,7 @@ func (r *CategoryRepositoryImpl) FindByID(id int) (*entity.Category, error) {
 }
 
 // Find all categories
-/*func (r *CategoryRepositoryImpl) FindAll(pagination utils.Pagination) (*utils.Pagination, error) {
+func (r *CategoryRepositoryImpl) FindAll(pagination utils.Pagination) (*utils.Pagination, error) {
 	var categories []entity.Category
 	if err := r.db.Scopes(pagination.Paginate(categories, r.db)).Find(&categories).Error; err != nil {
 		return nil, err
@@ -55,4 +56,4 @@ func (r *CategoryRepositoryImpl) FindByID(id int) (*entity.Category, error) {
 
 	pagination.Rows = categories
 	return &pagination, nil
-}*/
+}

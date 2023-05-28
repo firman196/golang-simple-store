@@ -5,6 +5,7 @@ import (
 	"golang-store/model/entity"
 	"golang-store/model/web"
 	"golang-store/repository/mocks"
+	"golang-store/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -34,6 +35,19 @@ var categoryUpdateInput = web.CategoryUpdateInput{
 	Slug:         "food",
 	Notes:        "notes test",
 	IsAktif:      "1",
+}
+
+var pagination = utils.Pagination{
+	Limit:      10,
+	Page:       1,
+	Sort:       "desc",
+	TotalRows:  100,
+	TotalPages: 2,
+	Rows: []map[string]interface{}{
+		{"id": 1, "icon": "icon.PNG", "category_name": "Food", "slug": "food", "notes": "notes test", "is_aktif": "1"},
+		{"id": 2, "icon": "icon.PNG", "category_name": "Food", "slug": "food", "notes": "notes test", "is_aktif": "1"},
+		{"id": 3, "icon": "icon.PNG", "category_name": "Food", "slug": "food", "notes": "notes test", "is_aktif": "1"},
+	},
 }
 
 // Scenario successfully
@@ -112,4 +126,16 @@ func TestUpdateFailed(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Nil(t, categoryUpdateErr)
+}
+
+// Scenario successfully
+// testing get all category using service using testify and mock
+func TestGetAllSuccess(t *testing.T) {
+	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
+	var categoryService = CategoryServiceImpl{repository: categoryRepository}
+	categoryRepository.Mock.On("FindAll", pagination).Return(pagination, nil)
+	category, err := categoryService.GetAll(pagination)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, category)
 }

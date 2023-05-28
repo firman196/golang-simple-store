@@ -2,6 +2,7 @@ package mocks
 
 import (
 	"golang-store/model/entity"
+	"golang-store/utils"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -33,7 +34,7 @@ func (r *CategoryRepositoryMock) Update(category entity.Category) (*entity.Categ
 	}
 }
 
-// find category by id
+// Mock find category by id
 func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
 	args := r.Called(id)
 	if args.Get(0) == nil {
@@ -44,13 +45,13 @@ func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
 	}
 }
 
-/*
+// Mock find all category
 func (r *CategoryRepositoryMock) FindAll(pagination utils.Pagination) (*utils.Pagination, error) {
-	var categories []entity.Category
-	if err := r.db.Scopes(pagination.Paginate(categories, r.db)).Find(&categories).Error; err != nil {
-		return nil, err
-	}
+	args := r.Called()
 
-	pagination.Rows = categories
-	return &pagination, nil
-}*/
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	} else {
+		return &pagination, nil
+	}
+}
