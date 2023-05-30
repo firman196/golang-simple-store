@@ -134,8 +134,8 @@ func TestGetAllSuccess(t *testing.T) {
 	var categoryRepository = &mocks.CategoryRepositoryMock{Mock: mock.Mock{}}
 	var categoryService = CategoryServiceImpl{repository: categoryRepository}
 	categoryRepository.Mock.On("FindAll", pagination).Return(pagination, nil)
-	category, err := categoryService.GetAll(pagination)
+	categoryAll, err := categoryService.GetAll(pagination)
 
 	assert.Nil(t, err)
-	assert.NotNil(t, category)
+	assert.NotNil(t, categoryAll)
 }

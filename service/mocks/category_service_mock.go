@@ -2,17 +2,18 @@ package mocks
 
 import (
 	"golang-store/model/entity"
+	"golang-store/model/web"
 	"golang-store/utils"
 
-	mock "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/mock"
 )
 
-type CategoryRepositoryMock struct {
+type CategoryServiceMock struct {
 	mock.Mock
 }
 
 // Mock create a new category
-func (r *CategoryRepositoryMock) Create(category entity.Category) (*entity.Category, error) {
+func (r *CategoryServiceMock) Create(category web.CategoryCreateInput) (*entity.Category, error) {
 	args := r.Called(category)
 
 	if args.Get(0) == nil {
@@ -24,7 +25,7 @@ func (r *CategoryRepositoryMock) Create(category entity.Category) (*entity.Categ
 }
 
 // Mock update a category
-func (r *CategoryRepositoryMock) Update(category entity.Category) (*entity.Category, error) {
+func (r *CategoryServiceMock) Update(category web.CategoryUpdateInput) (*entity.Category, error) {
 	args := r.Called(category)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
@@ -34,8 +35,8 @@ func (r *CategoryRepositoryMock) Update(category entity.Category) (*entity.Categ
 	}
 }
 
-// Mock find category by id
-func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
+// Mock get category by id
+func (r *CategoryServiceMock) GetById(id int) (*entity.Category, error) {
 	args := r.Called(id)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
@@ -45,8 +46,8 @@ func (r *CategoryRepositoryMock) FindByID(id int) (*entity.Category, error) {
 	}
 }
 
-// Mock find all category
-func (r *CategoryRepositoryMock) FindAll(pagination utils.Pagination) (*utils.Pagination, error) {
+// Mock get all category
+func (r *CategoryServiceMock) GetAll(pagination utils.Pagination) (*utils.Pagination, error) {
 	args := r.Called(pagination)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
