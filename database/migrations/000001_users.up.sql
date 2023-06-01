@@ -8,7 +8,7 @@ create table if not exists `users` (
     image VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     email_verified_at TIMESTAMP NULL,
-    verivication_code VARCHAR(10) NULL, 
+    verification_code VARCHAR(10) NULL, 
     phone_number VARCHAR(50) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT (now()),
     updated_at TIMESTAMP NOT NULL DEFAULT (now()),
