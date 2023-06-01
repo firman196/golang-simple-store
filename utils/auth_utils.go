@@ -10,7 +10,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func generateToken(request entity.User, expired time.Duration) (*string, error) {
+func GenerateToken(request entity.User, expired time.Duration) (*string, error) {
 	var jwtTokenSecret = []byte(os.Getenv("JWT_TOKEN_SECRET"))
 	var APPLICATION_NAME = "GOLANG-STORE"
 
@@ -34,7 +34,7 @@ func generateToken(request entity.User, expired time.Duration) (*string, error) 
 
 }
 
-func tokenClaims(userToken string) (*web.TokenClaims, error) {
+func TokenClaims(userToken string) (*web.TokenClaims, error) {
 	var jwtTokenSecret = []byte(os.Getenv("JWT_TOKEN_SECRET"))
 	claims := &web.TokenClaims{}
 
@@ -50,5 +50,4 @@ func tokenClaims(userToken string) (*web.TokenClaims, error) {
 	}
 
 	return claims, nil
-
 }
