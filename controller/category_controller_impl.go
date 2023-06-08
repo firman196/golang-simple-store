@@ -21,6 +21,14 @@ func NewCategoryControllerImpl(categoryService service.CategoryService) Category
 	}
 }
 
+// CreateCategory		godoc
+// @Summary			Create category
+// @Description		Save master category data in Db.
+// @Param			category body web.CategoryCreateInput true "Create category"
+// @Produce			application/json
+// @Tags			category
+// @Success			200 {object} utils.Response
+// @Router			/api/v1/category [post]
 func (service *CategoryControllerImpl) Create(c *gin.Context) {
 	var input web.CategoryCreateInput
 	err := c.ShouldBindJSON(&input)
@@ -43,6 +51,14 @@ func (service *CategoryControllerImpl) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// UpdateCategory		godoc
+// @Summary			Update category
+// @Description		Save master category data in Db.
+// @Param			category body web.CategoryCreateInput true "Create category"
+// @Produce			application/json
+// @Tags			category
+// @Success			200 {object} utils.Response
+// @Router			/api/v1/category [post]
 func (service *CategoryControllerImpl) Update(c *gin.Context) {
 	var input web.CategoryUpdateInput
 	err := c.ShouldBindJSON(&input)

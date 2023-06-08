@@ -1,0 +1,60 @@
+definitions:
+  utils.Meta:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      meta:
+        $ref: '#/definitions/utils.Meta'
+    type: object
+  web.CategoryCreateInput:
+    properties:
+      category_name:
+        maxLength: 100
+        type: string
+      icon:
+        type: string
+      is_aktif:
+        type: string
+      notes:
+        type: string
+      parent_id:
+        type: string
+      slug:
+        type: string
+    required:
+    - category_name
+    - is_aktif
+    - slug
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/category:
+    post:
+      description: Save master category data in Db.
+      parameters:
+      - description: Create category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/web.CategoryCreateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create category
+      tags:
+      - category
+swagger: "2.0"

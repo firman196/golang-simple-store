@@ -7,10 +7,14 @@ import (
 	"golang-store/service"
 	"os"
 
+	_ "golang-store/docs"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -47,13 +51,21 @@ func main() {
 
 	router := gin.Default()
 	router.Use(cors.Default())
+
+	// route swagger
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	api := router.Group("/api/v1")
 
 	//route category
-	api.POST("/category", categoryController.Create)
-	api.PUT("/category", categoryController.Update)
-	api.GET("/category/:id", categoryController.GetById)
-	api.GET("/category", categoryController.GetAll)
+	categoryRouter := api.Group("/category")
+	categoryRouter.POST("", categoryController.Create)
+	categoryRouter.PUT("", categoryController.Update)
+	categoryRouter.GET("/:id", categoryController.GetById)
+	categoryRouter.GET("", categoryController.GetAll)
+
+	//route user
+	//userRouter := api.Group("/user")
 
 	router.Run(":" + appPort)
 }
