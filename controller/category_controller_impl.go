@@ -80,6 +80,14 @@ func (service *CategoryControllerImpl) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// FindByIdCategory 	godoc
+// @Summary				Get Single kategori by id.
+// @Param				id path string true "update category by id"
+// @Description			Return data category where similar with id.
+// @Produce				application/json
+// @Tags				category
+// @Success				200 {object} utils.Response
+// @Router				/api/v1/category/{id} [get]
 func (service *CategoryControllerImpl) GetById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -99,6 +107,12 @@ func (service *CategoryControllerImpl) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// FindAllCategory 	godoc
+// @Summary			Get All Category.
+// @Description		Return list of category.
+// @Tags			category
+// @Success			200 {object} utils.Response
+// @Router			/category [get]
 func (service *CategoryControllerImpl) GetAll(c *gin.Context) {
 	var param utils.Pagination
 	err := c.ShouldBind(&param)
